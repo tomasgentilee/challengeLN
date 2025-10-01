@@ -10,6 +10,11 @@ services:
       MYSQL_ROOT_PASSWORD: rootpass
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootpass"]
+      interval: 5s
+      retries: 10
+      timeout: 5s
 
   web:
     build: .
@@ -24,7 +29,8 @@ services:
     env_file:
       - .env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
 volumes:
   mysql_data:
