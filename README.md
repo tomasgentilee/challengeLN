@@ -94,7 +94,7 @@ python manage.py runserver
 ---
 
 ## Hacer consultas a la base de datos
-En un cmd en la raiz del proyecto
+En un cmd en la raíz del proyecto
 
 docker-compose exec db mysql -u root -p
 
@@ -102,4 +102,4 @@ password: rootpass
 
 USE peopleflow;
 
-De esa forma ya estara usando la base de datos del proyecto
+De esa forma ya estará usando la base de datos del proyecto
