@@ -23,27 +23,60 @@ API Backend construida con **Django + Django REST Framework**, contenerizada con
 
 ---
 
-## Instalación en entorno local (sin Docker)
-
 ### 1. Clonar el repositorio
 bash
 
-[git clone https://github.com/<tu-usuario>/challengeLN.git](https://github.com/tomasgentilee/challengeLN.git)
+git clone https://github.com/tomasgentilee/challengeLN.git
 
 cd challengeLN
 
+---
 
-### 2. Crear y activar un entorno virtual
+## Instalación con Docker
+
+### 1. Crear las variables de entorno
+Crear un archivo .env en la raíz del proyecto (solo debe llamarse .env) con el siguiente contenido:
+
+SECRET_KEY='django-insecure-$)m^7=i%k6%-%21!v3z#03_r2wvj&$6a5g4%fge=qz6hk)2-(='
+
+DEBUG='True'
+
+DB_NAME='peopleflow'
+
+DB_USER='root'
+
+DB_PASSWORD='rootpass'
+
+DB_HOST='mysql_peopleflow'
+
+PORT='3306'
+
+### 2. Construir la imagen
+docker build -t peopleflow-django .
+
+### 3. Usando docker-compose
+docker-compose up --build
+
+Configuración de la base de datos
+
+### Aplicar migraciones dentro del contenedor:
+docker-compose exec web python manage.py migrate
+
+---
+
+## Instalación en entorno local (sin Docker)
+
+### 1. Crear y activar un entorno virtual
 python -m venv venv
 
 source venv/bin/activate   # Linux/Mac
 
 venv\Scripts\activate      # Windows
 
-### 3. Instalar dependencias
+### 2. Instalar dependencias
 pip install -r requirements.txt
 
-### 4. Configuración de variables de entorno
+### 3. Configuración de variables de entorno
 Crear un archivo .env en la raíz del proyecto (solo debe llamarse .env) con el siguiente contenido:
 
 SECRET_KEY='tu_secret_key'
@@ -60,36 +93,8 @@ DB_HOST='db_host'
 
 PORT='port'
 
-### 5. Aplicar migraciones
+### 4. Aplicar migraciones
 python manage.py migrate
 
-### 6. Levantar el servidor
+### 5. Levantar el servidor
 python manage.py runserver
-
----
-
-## Instalación con Docker
-
-### 1. Crear las variables de entorno
-Crear un archivo .env en la raíz del proyecto (solo debe llamarse .env) con el siguiente contenido:
-
-SECRET_KEY='django-insecure-$)m^7=i%k6%-%21!v3z#03_r2wvj&$6a5g4%fge=qz6hk)2-(='
-DEBUG='True'
-DB_NAME='peopleflow'
-DB_USER='root'
-DB_PASSWORD='rootpass'
-DB_HOST='mysql_peopleflow'
-PORT='3306'
-EMAIL_HOST_USER=''
-EMAIL_HOST_PASSWORD=''
-
-### 2. Construir la imagen
-docker build -t peopleflow-django .
-
-### 3. Usando docker-compose
-docker-compose up --build
-
-Configuración de la base de datos
-
-### Aplicar migraciones dentro del contenedor:
-docker-compose exec web python manage.py migrate
