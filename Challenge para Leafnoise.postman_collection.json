@@ -1,0 +1,432 @@
+{
+	"info": {
+		"_postman_id": "10b072c4-52f1-45f1-abaf-ef4bed10c6b9",
+		"name": "Challenge para Leafnoise",
+		"description": "Este proyecto implementa una API RESTful para la gestión de empleados, construida con Django + Django REST Framework y protegida mediante JWT Authentication con djangorestframework-simplejwt.\n\nLa API está pensada para un flujo de trabajo empresarial donde se requiere:\n\n- Registro y autenticación de usuarios con tokens JWT.\n    \n- Gestión completa de empleados (CRUD).\n    \n- Consultas avanzadas con filtros y búsqueda.\n    \n- Cálculo y reporte automático de salarios (promedio, mínimo y máximo).\n    \n\n---\n\n## Flujo de uso principal\n\n1. **Registro de usuario:** `/api/register/`\n    \n    Permite crear un nuevo usuario que luego podrá autenticarse.\n    \n2. **Generación de token JWT:**`/api/token/`\n    \n    El usuario obtiene un par de tokens (`access` y `refresh`) para autenticación.\n    \n    La colección Postman ya guarda automáticamente ambos en variables de entorno (`{{access_token}}`, `{{refresh_token}}`).\n    \n3. **Acceso a recursos protegidos**\n    \n    - **Listar empleados:** `GET /api/employees/`\n        \n    - **Cargar empleado:** `POST /api/employees/`\n        \n    - **Editar completo:** `PUT /api/employees/{id}/`\n        \n    - **Editar parcial:** `PATCH /api/employees/{id}/`\n        \n    - **Eliminar:** `DELETE /api/employees/{id}/`\n        \n4. Consultas y reportes\n    \n    - **Filtro de empleados por nombre, apellido o puesto**: `/api/employees/?search=...`\n        \n    - **Promedio de salarios**, con información adicional del salario mínimo y máximo: `/api/employees/avg_salary/`\n        \n    - **Enviar reporte de salarios**, que actualmente simula el envío de un correo vía consola: `/api/employees/send_report/`",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21192746",
+		"_collection_link": "https://challenge-leafnoise.postman.co/workspace/ddf14e78-0399-431e-83c1-d022905bb598/collection/21192746-10b072c4-52f1-45f1-abaf-ef4bed10c6b9?action=share&source=collection_link&creator=21192746"
+	},
+	"item": [
+		{
+			"name": "Registrarse",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"test\",\r\n    \"password\": \"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/register/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"register",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Token JWT",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"access_token\", jsonData.access);\r",
+							"pm.collectionVariables.set(\"refresh_token\", jsonData.refresh);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"test\",\r\n    \"password\": \"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/token/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"token",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar empleados",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/employees/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"employees",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cargar empleado",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Nacho\",\r\n  \"lastname\": \"Flow\",\r\n  \"email\": \"nacho.flow@gmail.com\",\r\n  \"position\": \"CFO\",\r\n  \"salary\": 1700.00,\r\n  \"entry_date\": \"2020-01-05\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/employees/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"employees",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener 1 por ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/employees/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"employees",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filtro por nombre, apellido y puesto",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/employees/?search=Nacho",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"employees",
+						""
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "Nacho"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar empleado completo",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Nacho\",\r\n  \"lastname\": \"Flow\",\r\n  \"email\": \"nacho.flow@gmail.com\",\r\n  \"position\": \"CFO\",\r\n  \"salary\": 1800.00,\r\n  \"entry_date\": \"2020-01-05\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/employees/1/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"employees",
+						"1",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar propiedades de empleado",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"salary\": 1900.00\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/employees/1/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"employees",
+						"1",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener promedio de salarios",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/employees/avg_salary",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"employees",
+						"avg_salary"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Enviar reporte de salarios",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/employees/send_report",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"employees",
+						"send_report"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar empleado",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/employees/1/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"employees",
+						"1",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "access_token",
+			"value": ""
+		},
+		{
+			"key": "refresh_token",
+			"value": ""
+		}
+	]
+}
