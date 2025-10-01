@@ -28,7 +28,7 @@ API Backend construida con **Django + Django REST Framework**, contenerizada con
 ### 1. Clonar el repositorio
 bash
 
-git clone https://github.com/<tu-usuario>/challengeLN.git
+[git clone https://github.com/<tu-usuario>/challengeLN.git](https://github.com/tomasgentilee/challengeLN.git)
 
 cd challengeLN
 
