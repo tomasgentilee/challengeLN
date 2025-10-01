@@ -70,13 +70,23 @@ python manage.py runserver
 
 ## Instalación con Docker
 
-### 1. Construir la imagen
+### 1. Crear las variables de entorno
+Crear un archivo .env en la raíz del proyecto (solo debe llamarse .env) con el siguiente contenido:
+
+SECRET_KEY='django-insecure-$)m^7=i%k6%-%21!v3z#03_r2wvj&$6a5g4%fge=qz6hk)2-(='
+DEBUG='True'
+DB_NAME='peopleflow'
+DB_USER='root'
+DB_PASSWORD='rootpass'
+DB_HOST='mysql_peopleflow'
+PORT='3306'
+EMAIL_HOST_USER=''
+EMAIL_HOST_PASSWORD=''
+
+### 2. Construir la imagen
 docker build -t peopleflow-django .
 
-### 2. Levantar el contenedor
-docker run -p 8000:8000 peopleflow-django
-
-### 3. (Opcional) Usando docker-compose
+### 3. Usando docker-compose
 docker-compose up --build
 
 Configuración de la base de datos
