@@ -90,3 +90,16 @@ python manage.py migrate
 
 ### 5. Levantar el servidor
 python manage.py runserver
+
+---
+
+## Hacer consultar a la base de datos
+En un cmd en la raiz del proyecto
+
+docker-compose exec db mysql -u root -p
+
+password: rootpass
+
+USE peopleflow;
+
+De esa forma ya estara usando la base de datos del proyecto
