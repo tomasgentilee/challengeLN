@@ -93,7 +93,7 @@ python manage.py runserver
 
 ---
 
-## Hacer consultar a la base de datos
+## Hacer consultas a la base de datos
 En un cmd en la raiz del proyecto
 
 docker-compose exec db mysql -u root -p
