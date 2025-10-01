@@ -1,0 +1,30 @@
+services:
+  db:
+    image: mysql:8
+    container_name: mysql_peopleflow
+    restart: always
+    environment:
+      MYSQL_DATABASE: peopleflow
+      MYSQL_USER: user
+      MYSQL_PASSWORD: toor
+      MYSQL_ROOT_PASSWORD: rootpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  web:
+    build: .
+    container_name: django_peopleflow
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+volumes:
+  mysql_data:
