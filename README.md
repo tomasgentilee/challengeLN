@@ -55,6 +55,8 @@ PORT='port'```
 ### 6. Levantar el servidor
 ```python manage.py runserver```
 
+---
+
 ## Instalación con Docker
 
 ### 1. Construir la imagen
