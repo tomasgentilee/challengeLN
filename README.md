@@ -51,16 +51,8 @@ DB_HOST='mysql_peopleflow'
 
 PORT='3306'
 
-### 2. Construir la imagen
-docker build -t peopleflow-django .
-
-### 3. Usando docker-compose
+### 2. Usando docker-compose
 docker-compose up --build
-
-Configuración de la base de datos
-
-### Aplicar migraciones dentro del contenedor:
-docker-compose exec web python manage.py migrate
 
 ---
 
